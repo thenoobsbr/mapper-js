@@ -6,7 +6,7 @@ export interface IAutoHydrateConfig {
 }
 
 export class AutoHydrate extends Hydrate {
-    constructor(private readonly autoHydrateConfig: IAutoHydrateConfig = {}) {
+    constructor(private readonly _autoHydrateConfig: IAutoHydrateConfig = {}) {
         super()
     }
 
@@ -18,7 +18,7 @@ export class AutoHydrate extends Hydrate {
 
     set(key: string, input: object) {
         const inputValue = input[key]
-        const config = this.autoHydrateConfig[key]
+        const config = this._autoHydrateConfig[key]
 
         if (config instanceof AutoHydratePropertyConfig) {
             this[key] = config.execute(inputValue, input)

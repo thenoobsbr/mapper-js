@@ -6,7 +6,7 @@ const data = {
     birthdate: new Date().toISOString(),
     addresses: [{
         street: "Rua dos bobos",
-        number: 0,
+        number: 100,
         city: "Fazendinha"
     }]
 }
@@ -14,4 +14,3 @@ const data = {
 const person = Person.create(data);
 
 console.log(person);
-

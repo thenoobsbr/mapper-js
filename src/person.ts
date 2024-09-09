@@ -33,12 +33,14 @@ export class Person extends AutoHydrate {
     name: string
     age: number
     birthdate: Date
-    address: Address
+    primaryAddress: Address
+    addresses: Address[]
 
     constructor() {
         super({
             birthdate: PropertyConfigs.date(),
-            address: PropertyConfigs.map(x => x['addresses'][0], PropertyConfigs.object(Address))
+            primaryAddress: PropertyConfigs.map(x => x['addresses'][0], PropertyConfigs.object(Address)),
+            addresses: PropertyConfigs.collection(PropertyConfigs.object(Address))
         });
     }
 
