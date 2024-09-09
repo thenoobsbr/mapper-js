@@ -1,0 +1,9 @@
+{
+  "name": "mapper-js",
+  "version": "1.0.0",
+  "description": "Mapper library",
+  "main": "src/index.ts",
+  "repository": "git@github.com:thenoobsbr/mapper-js.git",
+  "author": "Tiago de Carvalho Resende <tiagor87@gmail.com>",
+  "license": "MIT"
+}
