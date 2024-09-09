@@ -1,4 +1,4 @@
-﻿import {AutoHydrate, PropertyConfigs} from "./auto-hydrate";
+﻿import {AutoHydrate, PropertyConfigs} from "@/auto-hydrate";
 
 export interface ICreatePerson {
     name: string
@@ -13,7 +13,7 @@ export interface ICreateAddress {
     city: string
 }
 
-class Address extends AutoHydrate {
+export class Address extends AutoHydrate {
     street: string
     number: number
     city: string
