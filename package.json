@@ -8,10 +8,14 @@
   "author": "Tiago de Carvalho Resende <tiagor87@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "node --test --loader ts-node/esm --no-warnings"
+    "test": "jest ./tests/*"
   },
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@types/jest": "^29.5.12",
     "@types/node": "^22.5.4",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.2"
   }

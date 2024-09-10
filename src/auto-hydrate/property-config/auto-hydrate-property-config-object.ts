@@ -1,10 +1,9 @@
-﻿import {Hydrate} from "../../hydrate";
+﻿import {Hydrate, HydrateType} from "../../hydrate";
 import {AutoHydratePropertyConfig} from "./auto-hydrate-property-config";
 
-export type HydrateObject<T extends Hydrate> = new(...args: never[]) => T
 
 export class AutoHydratePropertyConfigObject<T extends Hydrate> extends AutoHydratePropertyConfig {
-    constructor(private readonly hydrateObject: HydrateObject<T>) {
+    constructor(private readonly hydrateObject: HydrateType<T>) {
         super();
     }
 

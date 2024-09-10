@@ -1,6 +1,6 @@
 ﻿import {AutoHydratePropertyConfig} from "./auto-hydrate-property-config";
 
-export type MapFunction = (input: object) => object
+export type MapFunction = (input: {[key: string]: any}) => object
 
 export class AutoHydratePropertyConfigMap extends AutoHydratePropertyConfig {
     constructor(private readonly mapFunction: MapFunction,

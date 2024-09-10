@@ -1,4 +1,7 @@
-﻿import {AutoHydrate, PropertyConfigs} from "@/auto-hydrate";
+﻿import {
+    AutoHydrate,
+    PropertyConfigs
+} from "../../src";
 
 export interface ICreatePerson {
     name: string
@@ -14,9 +17,9 @@ export interface ICreateAddress {
 }
 
 export class Address extends AutoHydrate {
-    street: string
-    number: number
-    city: string
+    street: string = ''
+    number: number = 0
+    city: string = ''
 
     constructor() {
         super();
@@ -30,11 +33,11 @@ export class Address extends AutoHydrate {
 }
 
 export class Person extends AutoHydrate {
-    name: string
-    age: number
-    birthdate: Date
-    primaryAddress: Address
-    addresses: Address[]
+    name: string = ''
+    age: number = 0
+    birthdate: Date = null!
+    primaryAddress: Address = null!
+    addresses: Address[] = []
 
     constructor() {
         super({

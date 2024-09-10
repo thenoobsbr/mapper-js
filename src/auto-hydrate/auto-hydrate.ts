@@ -1,34 +1,65 @@
 ﻿import {Hydrate} from "../hydrate";
 import {AutoHydratePropertyConfig} from "./property-config";
+import {FactoryType} from "../mapper";
 
 export interface IAutoHydrateConfig {
     [key: string]: AutoHydratePropertyConfig | undefined
 }
 
-export class AutoHydrate extends Hydrate {
-    constructor(private readonly _autoHydrateConfig: IAutoHydrateConfig = {}) {
+type ObjectType = {[key: string]: any}
+
+export class AutoHydrate<T extends object> extends Hydrate {
+    constructor(
+        private readonly _instanceType: FactoryType<T>,
+        private readonly _autoHydrateConfig: IAutoHydrateConfig = {}) {
         super()
     }
 
     hydrate(input: object) {
-        for (const key in this) {
-            this.set(key, input)
-        }
+        const instance = new this._instanceType()
+        return this.deepMap(instance, input)
     }
 
-    set(key: string, input: object) {
+    deepMap(instance: T, input: object): any {
+        for (const key in instance) {
+            instance[key] = this.getValue(key, input)
+        }
+
+        return instance
+    }
+
+    getValue(key: string, input: ObjectType) {
+        if (!input.hasOwnProperty(key)) {
+            return
+        }
+
         const inputValue = input[key]
         const config = this._autoHydrateConfig[key]
 
         if (config instanceof AutoHydratePropertyConfig) {
-            this[key] = config.execute(inputValue, input)
-            return
+            return config.execute(inputValue, input)
         }
 
-        if (!inputValue) {
-            return
+        if (!inputValue || this.isPrimitive(inputValue)) {
+            return inputValue
         }
 
-        this[key] = inputValue
+        if (Array.isArray(inputValue)) {
+            return inputValue.map(x => this.mapObject(x))
+        }
+
+        return this.mapObject(inputValue)
+    }
+
+    mapObject(input: object) {
+        const value: ObjectType = {}
+        for (const key in input) {
+            value[key] = this.getValue(key, input)
+        }
+        return value
+    }
+
+    isPrimitive(value: any): boolean {
+        return typeof value === "string" || typeof value === "number" || typeof value === "boolean"
     }
 }
