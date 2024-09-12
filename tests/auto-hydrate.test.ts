@@ -100,7 +100,7 @@ describe('auto hydrate', () => {
 
   it('should throw an error if type is not registered', () => {
     expect(() => autoHydrate.hydrate(Symbol.for('Person'), createPerson))
-      .toThrowError(AutoHydrateConfigNotFoundError)
+      .toThrow(AutoHydrateConfigNotFoundError)
   })
 
 
