@@ -1,11 +1,13 @@
 ﻿import { AutoHydrate } from '../src'
 import { Address, Person } from './stubs'
+import { AutoHydrateConfigNotFoundError } from '../src/errors'
 
 describe('auto hydrate', () => {
   const createPerson = {
     name: 'Tiago',
     age: 25,
     birthdate: new Date().toISOString(),
+    isActive: true,
     address: {
       street: 'Rua dos bobos',
       number: 100,
@@ -19,8 +21,14 @@ describe('auto hydrate', () => {
     toBeIgnored: {
       message: 'this should be ignored',
     },
+    nullValue: null,
+    undefinedValue: undefined,
   }
-  const autoHydrate: AutoHydrate = new AutoHydrate()
+  let autoHydrate: AutoHydrate
+
+  beforeEach(() => {
+    autoHydrate = new AutoHydrate()
+  })
 
   it('should hydrate a registered person type', () => {
     autoHydrate.register(Person, builder => {
@@ -41,6 +49,7 @@ describe('auto hydrate', () => {
     const person = autoHydrate.hydrate<Person>(Symbol.for(Person.name), createPerson)
 
     expect(person).toBeInstanceOf(Person)
+    expect(person.isActive).toEqual(createPerson.isActive)
     expect(person.age).toEqual(createPerson.age)
     expect(person.name).toEqual(createPerson.name)
     expect(person.birthdate).toBeInstanceOf(Date)
@@ -74,6 +83,7 @@ describe('auto hydrate', () => {
   it('should hydrate even when does not find any config if unsafe', () => {
     const person = autoHydrate.hydrate<Person>(Symbol.for(Person.name), createPerson, { unsafe: true })
     expect(person).not.toBeNull()
+    expect(person.isActive).toEqual(createPerson.isActive)
     expect(person.name).toEqual(createPerson.name)
     expect(person.age).toEqual(createPerson.age)
     expect(person.birthdate).toBeInstanceOf(Date)
@@ -87,4 +97,11 @@ describe('auto hydrate', () => {
     expect(person.addresses[0].number).toEqual(createPerson.address.number)
     expect(person.addresses[0].street).toEqual(createPerson.address.street)
   })
+
+  it('should throw an error if type is not registered', () => {
+    expect(() => autoHydrate.hydrate(Symbol.for('Person'), createPerson))
+      .toThrowError(AutoHydrateConfigNotFoundError)
+  })
+
+
 })

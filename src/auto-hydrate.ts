@@ -13,7 +13,7 @@ import {
   InstanceType,
 } from './types'
 import { AutoHydrateConfigBuilder } from './builder'
-import { AutoHydrateConfigNotFoundError } from './errors/auto-hydrate-config-not-found-error'
+import { AutoHydrateConfigNotFoundError } from './errors'
 import { ArrayAutoHydrateStrategy } from './strategies/array-auto-hydrate-strategy'
 
 export class AutoHydrate implements IAutoHydrateRegister, IAutoHydrate {
@@ -28,13 +28,15 @@ export class AutoHydrate implements IAutoHydrateRegister, IAutoHydrate {
   private configs = new Map<Symbol, IAutoHydrateConfig>()
 
   private static calculateStrategy(value: any): Symbol {
+    if (value === undefined || value === null) {
+      return Symbol.for('none')
+    }
+
     if (Array.isArray(value)) {
       return Symbol.for('array')
     }
 
     switch (typeof value) {
-      case 'string':
-        return AutoHydrate.isIsoDate(value) ? Symbol.for('iso-date') : Symbol.for('string')
       case 'number':
         return Symbol.for('number')
       case 'boolean':
@@ -42,7 +44,7 @@ export class AutoHydrate implements IAutoHydrateRegister, IAutoHydrate {
       case 'object':
         return Symbol.for('object')
       default:
-        return Symbol.for('string')
+        return AutoHydrate.isIsoDate(value) ? Symbol.for('iso-date') : Symbol.for('string')
     }
   }
 

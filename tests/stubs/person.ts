@@ -5,6 +5,7 @@
 }
 
 export class Person {
+  isActive: boolean = false
   name: string = ''
   age: number = 0
   birthdate: Date = null!
