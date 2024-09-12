@@ -8,7 +8,8 @@
   "author": "Tiago de Carvalho Resende <tiagor87@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "jest ./tests/*"
+    "start": "ts-node  ./src/index.ts",
+    "test": "jest ./tests/* --watch"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
@@ -18,5 +19,6 @@
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.2"
-  }
+  },
+  "dependencies": {}
 }

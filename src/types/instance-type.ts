@@ -1,0 +1,1 @@
+﻿export type InstanceType = new (...args: never[]) => object

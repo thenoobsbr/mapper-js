@@ -1,1 +1,1 @@
-export * from "./type-not-found"
+﻿export * from './auto-hydrate-config-not-found-error'
