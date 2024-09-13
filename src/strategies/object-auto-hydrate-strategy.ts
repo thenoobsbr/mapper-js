@@ -1,4 +1,4 @@
-﻿import { AutoHydrateStrategy, IAutoHydrateExecutionParams } from '../types'
+﻿import { AutoHydrateStrategy, DumbObject, IAutoHydrateExecutionParams } from '../types'
 
 export class ObjectAutoHydrateStrategy extends AutoHydrateStrategy {
   execute({
@@ -7,6 +7,6 @@ export class ObjectAutoHydrateStrategy extends AutoHydrateStrategy {
             key,
             value,
           }: IAutoHydrateExecutionParams) {
-    instance[key] = autoHydrate.hydrate(Object, value, { unsafe: true })
+    instance[key] = autoHydrate.hydrate(DumbObject, value, { unsafe: true })
   }
 }

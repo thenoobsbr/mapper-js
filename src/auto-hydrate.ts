@@ -1,5 +1,6 @@
 ﻿import {
   AutoHydrateConfigAction,
+  DumbObject,
   IAutoHydrate,
   IAutoHydrateConfig,
   IAutoHydrateOptions,
@@ -25,17 +26,16 @@ export class AutoHydrate implements IAutoHydrateRegister, IAutoHydrate {
   }
 
   hydrate<T extends object>(type: InstanceType, input: any, options: IAutoHydrateOptions = { unsafe: false }): T {
-    const config = this.configs.get(Symbol.for(type.name))
+    const symbol = Symbol.for(type.name)
+    const config = this.configs.get(symbol)
 
     if (!options?.unsafe && !config) {
-      throw new AutoHydrateConfigNotFoundError(Symbol.for(type.name))
+      throw new AutoHydrateConfigNotFoundError(symbol)
     }
 
     const instance = config?.createInstance() ?? new type()
-    Object.entries(input).forEach(([key, value]) => {
-      if (!options?.unsafe && !instance.hasOwnProperty(key)) {
-        return
-      }
+    Object.keys(instance instanceof DumbObject ? input : instance).forEach(key => {
+      const value = input[key]
 
       const property = config?.getProperty(key)
       if (property) {
@@ -43,6 +43,10 @@ export class AutoHydrate implements IAutoHydrateRegister, IAutoHydrate {
           autoHydrate: this,
           value,
         })
+        return
+      }
+
+      if (!options?.unsafe && !instance.hasOwnProperty(key)) {
         return
       }
 
