@@ -1,12 +1,12 @@
-﻿import { AutoHydrateStrategy, KeyValueObjectType } from './auto-hydrate-strategy'
-import { IAutoHydrate } from '../types'
+﻿import { AutoHydrateStrategy, IAutoHydrateExecutionParams } from '../types'
 
 export class ObjectAutoHydrateStrategy extends AutoHydrateStrategy {
-  constructor(private readonly autoHydrate: IAutoHydrate) {
-    super()
-  }
-
-  execute(instance: KeyValueObjectType, key: string, value: KeyValueObjectType) {
-    instance[key] = this.autoHydrate.hydrate(Symbol.for('Object'), value, { unsafe: true })
+  execute({
+            autoHydrate,
+            instance,
+            key,
+            value,
+          }: IAutoHydrateExecutionParams) {
+    instance[key] = autoHydrate.hydrate(Object, value, { unsafe: true })
   }
 }

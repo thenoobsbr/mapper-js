@@ -59,13 +59,13 @@ export class AutoHydrateConfigProperty implements IAutoHydrateConfigProperty {
         ...getValue.value,
       ]
     }
-    return getValue.value.map((value: any) => getValue.autoHydrate.hydrate(Symbol.for(this._instanceType!.name), value))
+    return getValue.value.map((value: any) => getValue.autoHydrate.hydrate(this._instanceType!, value))
   }
 
   getObjectValue(getValue: IGetValueParams): any {
     if (!this._instanceType) {
       return getValue.value
     }
-    return getValue.autoHydrate.hydrate(Symbol.for(this._instanceType.name), getValue.value)
+    return getValue.autoHydrate.hydrate(this._instanceType, getValue.value)
   }
 }

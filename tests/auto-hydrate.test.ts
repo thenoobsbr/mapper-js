@@ -46,7 +46,7 @@ describe('auto hydrate', () => {
         })
     })
     autoHydrate.register(Address)
-    const person = autoHydrate.hydrate<Person>(Symbol.for(Person.name), createPerson)
+    const person = autoHydrate.hydrate<Person>(Person, createPerson)
 
     expect(person).toBeInstanceOf(Person)
     expect(person.isActive).toEqual(createPerson.isActive)
@@ -76,13 +76,14 @@ describe('auto hydrate', () => {
         })
     })
     autoHydrate.register(Address)
-    const person = autoHydrate.hydrate<Person>(Symbol.for(Person.name), createPerson)
+    const person = autoHydrate.hydrate<Person>(Person, createPerson)
     expect(person).not.toHaveProperty('toBeIgnored')
   })
 
   it('should hydrate even when does not find any config if unsafe', () => {
-    const person = autoHydrate.hydrate<Person>(Symbol.for(Person.name), createPerson, { unsafe: true })
+    const person = autoHydrate.hydrate<Person>(Person, createPerson, { unsafe: true })
     expect(person).not.toBeNull()
+    expect(person).toBeInstanceOf(Person)
     expect(person.isActive).toEqual(createPerson.isActive)
     expect(person.name).toEqual(createPerson.name)
     expect(person.age).toEqual(createPerson.age)
@@ -99,7 +100,7 @@ describe('auto hydrate', () => {
   })
 
   it('should throw an error if type is not registered', () => {
-    expect(() => autoHydrate.hydrate(Symbol.for('Person'), createPerson))
+    expect(() => autoHydrate.hydrate(Person, createPerson))
       .toThrow(AutoHydrateConfigNotFoundError)
   })
 

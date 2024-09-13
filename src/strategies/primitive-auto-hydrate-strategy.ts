@@ -1,7 +1,11 @@
-﻿import { AutoHydrateStrategy, KeyValueObjectType } from './auto-hydrate-strategy'
+﻿import { AutoHydrateStrategy, IAutoHydrateExecutionParams } from '../types'
 
 export class PrimitiveAutoHydrateStrategy extends AutoHydrateStrategy {
-  execute(instance: KeyValueObjectType, key: string, value: any) {
+  execute({
+            instance,
+            key,
+            value,
+          }: IAutoHydrateExecutionParams) {
     instance[key] = value
   }
 }
